@@ -61,16 +61,19 @@ function ResultadosPage() {
     
     setDeletingId(id);
     try {
-      // Deletar primeiro as respostas (devido à chave estrangeira)
-      await supabase.from('respostas').delete().eq('auditoria_id', id);
-      const { error } = await supabase.from('auditorias').delete().eq('id', id);
+      // 1. Deletar as respostas ligadas a essa auditoria
+      const { error: resError } = await supabase.from('respostas').delete().eq('auditoria_id', id);
+      if (resError) throw resError;
+
+      // 2. Deletar o registro da auditoria
+      const { error: audError } = await supabase.from('auditorias').delete().eq('id', id);
+      if (audError) throw audError;
       
-      if (error) throw error;
-      
-      toast.success('Auditoria removida com sucesso');
+      toast.success('Auditoria removida permanentemente');
       setAuditorias(prev => prev.filter(a => a.id !== id));
     } catch (err: any) {
-      toast.error('Erro ao excluir: ' + err.message);
+      console.error('Falha na exclusão:', err);
+      toast.error('Erro ao excluir do banco de dados: ' + (err.message || 'Verifique suas permissões no Supabase'));
     } finally {
       setDeletingId(null);
     }
