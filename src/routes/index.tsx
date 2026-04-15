@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Search, Check, X, Save, ChevronRight, MessageSquare } from 'lucide-react';
+import { Search, Check, X, Save, ChevronRight, MessageSquare, Camera, Trash, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/')({
@@ -49,8 +49,10 @@ function AuditPage() {
   const [auditor, setAuditor] = useStickyState('', 'audit_auditor_nome');
   const [respostas, setRespostas] = useStickyState<Record<string, 'Conforme' | 'Não Conforme'>>({}, 'audit_respostas');
   const [observacoes, setObservacoes] = useStickyState<Record<string, string>>({}, 'audit_observacoes');
+  const [fotos, setFotos] = useStickyState<string[]>([], 'audit_fotos');
   
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     supabase
@@ -116,6 +118,7 @@ function AuditPage() {
           pontos: conformeCount,
           classificacao,
           observacoes: observacaoFinalStr,
+          fotos: fotos, // Salvando a lista de URLs das fotos
         })
         .select('id');
 
@@ -137,14 +140,53 @@ function AuditPage() {
       
       setRespostas({});
       setObservacoes({});
+      setFotos([]); // Limpa as fotos após salvar
       setSelected(null);
       setSearch('');
     } catch (err: any) {
       console.error('ERRO AUDITORIA:', err);
-      toast.error(`Falha ao salvar: ${err.message || 'Erro de conexão'}. Verifique se rodou o comando SQL da coluna "pontos".`);
+      toast.error(`Falha ao salvar: ${err.message || 'Erro de conexão'}. Verifique se rodou o comando SQL da coluna "pontos" e criou o bucket "evidencias".`);
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Foto muito grande! O limite é 5MB.");
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `audit-${fileName}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from('evidencias')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('evidencias')
+        .getPublicUrl(filePath);
+
+      setFotos(prev => [...prev, publicUrl]);
+      toast.success("Foto anexada com sucesso!");
+    } catch (error: any) {
+      toast.error("Erro no upload: " + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeFoto = (urlToRemove: string) => {
+    setFotos(prev => prev.filter(url => url !== urlToRemove));
   };
 
   if (!selected) {
@@ -311,6 +353,37 @@ function AuditPage() {
             </div>
           );
         })}
+
+        {/* SEÇÃO DE EVIDÊNCIAS FOTOGRÁFICAS */}
+        <div className="bg-white p-6 rounded-2xl border border-border shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">Evidências Fotográficas</p>
+              <p className="text-[8px] font-bold text-[#8CC63F] uppercase">Anexe fotos da mesa para comprovação</p>
+            </div>
+            <label className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase transition-all ${uploading ? 'bg-muted text-muted-foreground' : 'bg-[#8CC63F] text-white shadow-lg shadow-[#8CC63F]/20'}`}>
+              {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+              {uploading ? 'Enviando...' : 'Tirar Foto'}
+              <input type="file" accept="image/*" capture="environment" className="hidden" onChange={handleFileUpload} disabled={uploading} />
+            </label>
+          </div>
+
+          {fotos.length > 0 && (
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
+              {fotos.map((url, idx) => (
+                <div key={idx} className="relative shrink-0 group">
+                  <img src={url} alt={`Evidência ${idx}`} className="h-24 w-24 object-cover rounded-xl border border-border" />
+                  <button 
+                    onClick={() => removeFoto(url)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all"
+                  >
+                    <Trash className="h-3 w-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="pt-6">
           <Button

@@ -40,7 +40,7 @@ function ResultadosPage() {
     setLoading(true);
     const { data } = await supabase
       .from('auditorias')
-      .select('id, nome_auditor, data_hora, score, pontos, classificacao, observacoes, colaboradores(nome, area, cpf)')
+      .select('id, nome_auditor, data_hora, score, pontos, classificacao, observacoes, fotos, colaboradores(nome, area, cpf)')
       .order('data_hora', { ascending: false })
       .limit(200);
 
@@ -248,6 +248,27 @@ function ResultadosPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* GALERIA DE FOTOS NA LISTA */}
+                {a.fotos && a.fotos.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-border flex gap-2 overflow-x-auto scrollbar-hide">
+                    {a.fotos.map((url, idx) => (
+                      <a 
+                        key={idx} 
+                        href={url} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="shrink-0 transition-all hover:scale-105"
+                      >
+                        <img 
+                          src={url} 
+                          alt="Evidência" 
+                          className="h-16 w-16 object-cover rounded-lg border border-border shadow-sm" 
+                        />
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
             {filtered.length === 0 && (
