@@ -122,119 +122,132 @@ function ResultadosPage() {
   });
 
   return (
-    <div className="min-h-screen pb-24 bg-muted/20">
-      <PageHeader title="Resultados" subtitle={`${filtered.length} auditorias encontradas`} />
-
-      <div className="px-4 space-y-4">
-        {/* Actions bar */}
-        <div className="flex justify-between items-center bg-card p-3 rounded-xl border border-border/50 shadow-sm">
-           <p className="text-xs font-bold text-muted-foreground uppercase">Ações Rápidas</p>
-           <Button variant="outline" size="sm" onClick={handleDownloadCSV} className="h-8 gap-2 text-xs font-bold">
-              <Download className="h-3.5 w-3.5" />
-              Exportar Planilha
-           </Button>
+    <div className="min-h-screen pb-24 bg-[#F8F9FA]">
+      <div className="glass-header px-6 py-8 mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-black text-secondary tracking-tight">Monitoramento <span className="text-primary">.</span></h1>
+          <p className="text-sm font-medium text-muted-foreground mt-1">{filtered.length} registros sincronizados</p>
         </div>
+        <Button 
+          onClick={handleDownloadCSV} 
+          className="btn-conforme rounded-2xl h-12 gap-2 text-xs font-black uppercase px-6"
+        >
+          <Download className="h-4 w-4" />
+          Planilha
+        </Button>
+      </div>
 
-        {/* Filters */}
-        <div className="space-y-3 bg-card p-4 rounded-xl border border-border/50 shadow-sm">
-          <p className="text-xs font-bold text-muted-foreground uppercase mb-2">Filtros de Busca</p>
+      <div className="px-6 space-y-6 animate-chique">
+        <div className="premium-card p-6 rounded-3xl space-y-5">
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Painel de Filtros</p>
           
-          <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
-            {['', 'Conforme', 'Atenção', 'Não conforme'].map(c => (
-              <button
-                key={c}
-                onClick={() => setClassFilter(c)}
-                className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                  classFilter === c ? 'bg-primary text-primary-foreground shadow-md' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
-              >
-                {c || 'Todas Situações'}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 scrollbar-hide">
-            <button
-              onClick={() => setAreaFilter('')}
-              className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                !areaFilter ? 'bg-primary text-primary-foreground shadow-md' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              }`}
-            >
-              Todas Áreas
-            </button>
-            {areas.map(area => (
-              <button
-                key={area}
-                onClick={() => setAreaFilter(area === areaFilter ? '' : area)}
-                className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-bold transition-all ${
-                  areaFilter === area ? 'bg-primary text-primary-foreground shadow-md' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                }`}
-              >
-                {area}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 pt-1">
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase ml-1">Início</label>
-              <Input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-10 text-xs rounded-lg" />
+          <div className="space-y-4">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-2 px-2">
+              {['', 'Conforme', 'Atenção', 'Não conforme'].map(c => (
+                <button
+                  key={c}
+                  onClick={() => setClassFilter(c)}
+                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
+                    classFilter === c ? 'bg-secondary text-white shadow-lg' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  {c || 'Todos Status'}
+                </button>
+              ))}
             </div>
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-muted-foreground uppercase ml-1">Fim</label>
-              <Input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-10 text-xs rounded-lg" />
+
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-2 px-2 border-t border-border/50 pt-4">
+              <button
+                onClick={() => setAreaFilter('')}
+                className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
+                  !areaFilter ? 'bg-primary text-white shadow-lg' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                }`}
+              >
+                Todas Áreas
+              </button>
+              {areas.map(area => (
+                <button
+                  key={area}
+                  onClick={() => setAreaFilter(area === areaFilter ? '' : area)}
+                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
+                    areaFilter === area ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  }`}
+                >
+                  {area}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-muted-foreground uppercase ml-1">De</label>
+                <Input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-11 rounded-xl bg-muted/30 border-none text-xs font-bold" />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-black text-muted-foreground uppercase ml-1">Até</label>
+                <Input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-11 rounded-xl bg-muted/30 border-none text-xs font-bold" />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* List */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-sm font-medium text-muted-foreground">Sincronizando dados...</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Obtendo dados seguros...</p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {filtered.map(a => (
-              <div key={a.id} className="group relative rounded-xl bg-card p-4 shadow-sm border border-border/50 hover:border-primary/30 transition-all hover:shadow-md">
+          <div className="grid grid-cols-1 gap-4">
+            {filtered.map((a, i) => (
+              <div 
+                key={a.id} 
+                className="premium-card p-6 rounded-3xl"
+                style={{ animationDelay: `${i * 0.05}s` }}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-bold text-sm text-foreground">{a.colaboradores?.nome ?? '—'}</p>
-                      <span className={`inline-block rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-tight ${classificacaoBg(a.classificacao)}`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <p className="font-black text-secondary text-lg leading-none tracking-tight">{a.colaboradores?.nome ?? '—'}</p>
+                      <span className={`inline-block rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${classificacaoBg(a.classificacao)}`}>
                         {a.classificacao}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                      <Filter className="h-3 w-3" /> {a.colaboradores?.area}
-                    </p>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1.5 mt-1">
-                      <Calendar className="h-3 w-3" /> {new Date(a.data_hora).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-                    </p>
-                    <p className="text-[10px] font-medium text-muted-foreground mt-2 bg-muted/50 inline-block px-2 py-0.5 rounded">
-                      Auditor: {a.nome_auditor}
-                    </p>
+                    <div className="flex flex-wrap gap-x-4 gap-y-2">
+                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-1.5 uppercase">
+                        <Filter className="h-3 w-3 text-primary" /> {a.colaboradores?.area}
+                      </p>
+                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-1.5 uppercase">
+                        <Calendar className="h-3 w-3 text-primary" /> {new Date(a.data_hora).toLocaleString('pt-BR')}
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between">
+                      <p className="text-[9px] font-black text-muted-foreground uppercase bg-muted/50 px-3 py-1 rounded-full">
+                        Responsável: {a.nome_auditor}
+                      </p>
+                      <button 
+                        onClick={() => handleDelete(a.id, a.colaboradores?.nome || '')}
+                        disabled={deletingId === a.id}
+                        className="p-2 text-muted-foreground/40 hover:text-danger hover:bg-danger/10 rounded-xl transition-all active:scale-90"
+                      >
+                        <Trash2 className={`h-4 w-4 ${deletingId === a.id ? 'animate-pulse' : ''}`} />
+                      </button>
+                    </div>
                   </div>
                   
-                  <div className="flex flex-col items-end gap-3">
-                    <p className="text-2xl font-black text-foreground">{a.score}<span className="text-xs font-bold text-muted-foreground">%</span></p>
-                    <button 
-                      onClick={() => handleDelete(a.id, a.colaboradores?.nome || '')}
-                      disabled={deletingId === a.id}
-                      className="p-2 text-muted-foreground hover:text-danger hover:bg-danger/10 rounded-lg transition-colors"
-                      title="Excluir Auditoria"
-                    >
-                      <Trash2 className={`h-4 w-4 ${deletingId === a.id ? 'animate-pulse' : ''}`} />
-                    </button>
+                  <div className="pl-6 text-right">
+                    <div className="flex items-baseline justify-end gap-1">
+                      <p className="text-3xl font-black text-secondary tracking-tighter">{a.score}</p>
+                      <p className="text-xs font-black text-primary">%</p>
+                    </div>
+                    <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mt-1">Pontuação Final</p>
                   </div>
                 </div>
               </div>
             ))}
             {filtered.length === 0 && (
-              <div className="text-center py-20 bg-card rounded-2xl border border-dashed border-border/60">
-                <Search className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
-                <p className="text-sm font-bold text-muted-foreground">Nenhuma auditoria encontrada</p>
-                <p className="text-xs text-muted-foreground mt-1">Tente ajustar os filtros acima.</p>
+              <div className="text-center py-24 premium-card rounded-3xl border-dashed">
+                <Search className="h-10 w-10 text-muted-foreground/20 mx-auto mb-4" />
+                <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Nenhum registro encontrado</p>
               </div>
             )}
           </div>
