@@ -107,7 +107,7 @@ function AuditPage() {
       
       const observacaoFinalStr = observacaoFinalArr.length > 0 ? observacaoFinalArr.join('\n\n') : null;
 
-      const { data: auditoria, error: audError } = await supabase
+      const { data: createdAud, error: audError } = await supabase
         .from('auditorias')
         .insert({
           cpf_colaborador: selected.cpf,
@@ -116,13 +116,15 @@ function AuditPage() {
           classificacao,
           observacoes: observacaoFinalStr,
         })
-        .select('id')
-        .single();
+        .select('id');
 
       if (audError) throw audError;
+      
+      const auditoriaId = createdAud?.[0]?.id;
+      if (!auditoriaId) throw new Error('Falha ao obter ID da auditoria');
 
       const respostasToInsert = CRITERIOS.map(c => ({
-        auditoria_id: auditoria.id,
+        auditoria_id: auditoriaId,
         criterio: c.id,
         resposta: respostas[c.id],
       }));
