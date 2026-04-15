@@ -31,8 +31,8 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "AuditDesk - Auditoria de Mesas" },
-      { name: "description", content: "Sistema de auditoria de organização de mesas de trabalho" },
+      { title: "AuditGrão - Auditoria de Mesas" },
+      { name: "description", content: "Sistema de auditoria corporativa AuditGrão" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

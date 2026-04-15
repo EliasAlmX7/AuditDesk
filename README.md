@@ -1,6 +1,6 @@
-# 📋 AuditDesk - Sistema de Auditoria Corporativa
+# 📋 AuditGrão - Sistema de Auditoria Corporativa
 
-O **AuditDesk** é uma aplicação moderna voltada para auditorias de organização, 5S e padronização em ambientes de escritório corporativo. Desenvolvido com foco na usabilidade em tablets, o sistema oferece uma interface fluida, profissional e eficiente.
+O **AuditGrão** é uma aplicação moderna voltada para auditorias de organização, 5S e padronização em ambientes de escritório corporativo. Desenvolvido com foco na usabilidade em tablets, o sistema oferece uma interface fluida, profissional e eficiente.
 
 ## ✨ Diferenciais do Sistema
 - **Interface Premium**: Design corporativo utilizando a fonte Montserrat e paleta de cores personalizada (Verde, Cinza Escuro e Marrom).

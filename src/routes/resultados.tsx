@@ -125,7 +125,7 @@ function ResultadosPage() {
     <div className="min-h-screen pb-24 bg-[#F4F4F4]">
       <div className="bg-white px-6 py-8 mb-6 border-b border-border shadow-sm flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">Monitoramento <span className="text-[#8CC63F]">.</span></h1>
+          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">AuditGrão <span className="text-[#8CC63F]">.</span></h1>
           <p className="text-sm font-bold text-[#605444] mt-1">{filtered.length} Registros Sincronizados</p>
         </div>
         <Button 

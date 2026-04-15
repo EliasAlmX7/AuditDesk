@@ -148,7 +148,7 @@ function AuditPage() {
     return (
       <div className="min-h-screen pb-24 bg-[#F4F4F4]">
         <div className="bg-white px-6 py-8 mb-6 border-b border-border shadow-sm">
-          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">AuditDesk <span className="text-[#8CC63F]">.</span></h1>
+          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">AuditGrão <span className="text-[#8CC63F]">.</span></h1>
           <p className="text-sm font-bold text-[#605444] mt-1">Gestão de Auditoria Corportativa</p>
         </div>
 
