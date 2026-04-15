@@ -5,13 +5,23 @@ import type { Database } from './types';
 function createSupabaseClient() {
   // Use import.meta.env for client-side (Vite build-time replacement)
   // Fall back to process.env for SSR (server-side rendering)
-  const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY;
+  // Try to get variables from multiple possible sources
+  const SUPABASE_URL = 
+    import.meta.env.VITE_SUPABASE_URL || 
+    (typeof process !== 'undefined' ? process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL : undefined) ||
+    (globalThis as any).VITE_SUPABASE_URL || 
+    (globalThis as any).SUPABASE_URL;
+
+  const SUPABASE_PUBLISHABLE_KEY = 
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 
+    (typeof process !== 'undefined' ? process.env.VITE_SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY : undefined) ||
+    (globalThis as any).VITE_SUPABASE_PUBLISHABLE_KEY || 
+    (globalThis as any).SUPABASE_PUBLISHABLE_KEY;
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-    throw new Error(
-      'Missing Supabase environment variables. Ensure SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY (or VITE_ prefixed versions) are set in your .env file.'
-    );
+    const errorMsg = `Conexão falhou: Chaves do Supabase não encontradas no ambiente Cloudflare. 
+      Certifique-se de que VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY estão configuradas no painel da Cloudflare (Settings > Variables).`;
+    throw new Error(errorMsg);
   }
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
