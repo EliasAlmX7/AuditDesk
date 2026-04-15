@@ -35,7 +35,7 @@ export type CriterioId = typeof CRITERIOS[number]['id'];
 
 export function calcularScore(respostas: Record<string, 'Conforme' | 'Não Conforme'>): number {
   const okCount = Object.values(respostas).filter(r => r === 'Conforme').length;
-  return Math.round((okCount / 6) * 100 * 100) / 100;
+  return Math.round((okCount / CRITERIOS.length) * 100);
 }
 
 export function calcularClassificacao(score: number): 'Conforme' | 'Atenção' | 'Não conforme' {
