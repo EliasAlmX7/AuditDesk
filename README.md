@@ -1,27 +1,26 @@
 # 📋 AuditGrão - Sistema de Auditoria Corporativa
 
-O **AuditGrão** é uma aplicação moderna voltada para auditorias de organização, 5S e padronização em ambientes de escritório corporativo. Desenvolvido com foco na usabilidade em tablets, o sistema oferece uma interface fluida, profissional e eficiente.
+O **AuditGrão** é uma ferramenta de alta performance para auditorias de organização e padronização.
 
-## ✨ Diferenciais do Sistema
-- **Interface Premium**: Design corporativo utilizando a fonte Montserrat e paleta de cores personalizada (Verde, Cinza Escuro e Marrom).
-- **Otimizado para Tablets**: Botões amplos de "Conforme" e "Não Conforme" facilitando o uso em campo.
-- **Observações Detalhadas**: Campo de justificativa individual para cada critério de auditoria.
-- **Resiliência de Dados**: Sistema de persistência local (Auto-save) que evita a perda de informações caso a página seja atualizada ou a internet oscile.
-- **Sincronização Cloud**: Integração em tempo real com banco de dados Supabase (PostgreSQL).
+## 🚀 Guia de Configuração (Cloudflare + Supabase)
 
-## 🚀 Tecnologias Utilizadas
-- **Frontend**: React + Vite
-- **Roteamento**: TanStack Router / Start
-- **Estilização**: Tailwind CSS (Custom Theme)
-- **Backend/DB**: Supabase
-- **Infraestrutura**: Cloudflare Pages / Workers
+Se você está reconfigurando o sistema ou movendo para um novo banco de dados, siga estas chaves:
 
-## 🛠️ Configuração do Ambiente
-Para rodar este projeto online, é necessário configurar as seguintes variáveis de ambiente (Environment Variables) no painel de hospedagem:
+### 1. Variáveis de Ambiente (Cloudflare)
+No painel da Cloudflare (Settings > Variables), você deve configurar exatamente estas chaves:
+- `VITE_SUPABASE_URL`: Sua URL do projeto.
+- `VITE_SUPABASE_PUBLISHABLE_KEY`: Sua Anon Key pública.
+- `VITE_SUPABASE_PROJECT_ID`: O ID do projeto (ex: `ilvbmzicx...`).
 
-- `VITE_SUPABASE_URL`: URL do seu projeto Supabase.
-- `VITE_SUPABASE_PUBLISHABLE_KEY`: Chave anônima pública de API.
-- `VITE_SUPABASE_PROJECT_ID`: ID único do projeto.
+### 2. Estrutura do Banco (SQL Editor)
+Sempre execute o script de criação das tabelas (`colaboradores`, `auditorias`, `respostas`) no SQL Editor do Supabase antes do primeiro uso.
+
+### 3. Como Importar Colaboradores via CSV
+1. No Supabase, vá em **Table Editor**.
+2. Selecione a tabela `colaboradores`.
+3. Clique no botão **"Insert"** > **"Import data from CSV"**.
+4. Arraste seu arquivo CSV.
+5. **Atenção**: Certifique-se de que as colunas do seu arquivo coincidam com: `cpf`, `nome`, `area`, `cargo`.
 
 ---
-*Desenvolvido para ambientes corporativos de alta performance.*
+*AuditGrão: Eficiência e Transparência na Gestão Corporativa.*
