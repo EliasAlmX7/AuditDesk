@@ -40,7 +40,7 @@ function ResultadosPage() {
     setLoading(true);
     const { data } = await supabase
       .from('auditorias')
-      .select('id, nome_auditor, data_hora, score, classificacao, observacoes, colaboradores(nome, area, cpf)')
+      .select('id, nome_auditor, data_hora, score, pontos, classificacao, observacoes, colaboradores(nome, area, cpf)')
       .order('data_hora', { ascending: false })
       .limit(200);
 
