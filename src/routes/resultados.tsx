@@ -5,7 +5,7 @@ import { classificacaoBg } from '@/lib/constants';
 import { PageHeader } from '@/components/PageHeader';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Calendar, Filter, Trash2, Download, Search } from 'lucide-react';
+import { Calendar, Filter, Trash2, Download, Search, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/resultados')({
@@ -31,6 +31,7 @@ function ResultadosPage() {
   const [dateTo, setDateTo] = useState('');
   const [areas, setAreas] = useState<string[]>([]);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [previewFoto, setPreviewFoto] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -251,21 +252,19 @@ function ResultadosPage() {
 
                 {/* GALERIA DE FOTOS NA LISTA */}
                 {a.fotos && a.fotos.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-border flex gap-2 overflow-x-auto scrollbar-hide">
+                  <div className="mt-4 pt-4 border-t border-border flex gap-3 overflow-x-auto scrollbar-hide">
                     {a.fotos.map((url, idx) => (
-                      <a 
+                      <div 
                         key={idx} 
-                        href={url} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="shrink-0 transition-all hover:scale-105"
+                        onClick={() => setPreviewFoto(url)}
+                        className="shrink-0 transition-all hover:scale-105 cursor-pointer active:scale-95"
                       >
                         <img 
                           src={url} 
                           alt="Evidência" 
-                          className="h-16 w-16 object-cover rounded-lg border border-border shadow-sm" 
+                          className="h-32 w-32 object-cover rounded-xl border-2 border-border shadow-md" 
                         />
-                      </a>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -277,6 +276,21 @@ function ResultadosPage() {
                 <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">Nenhum Registro Encontrado</p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* MODAL DE PREVIEW DA FOTO */}
+        {previewFoto && (
+          <div 
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-6 animate-in fade-in duration-200"
+            onClick={() => setPreviewFoto(null)}
+          >
+            <div className="relative max-w-full max-h-full">
+              <button className="absolute -top-12 right-0 text-white p-2 flex items-center gap-2 font-black uppercase text-xs">
+                <X className="h-6 w-6" /> Fechar
+              </button>
+              <img src={previewFoto} className="max-w-full max-h-[80vh] rounded-2xl shadow-2xl object-contain border border-white/20" alt="Preview" />
+            </div>
           </div>
         )}
       </div>

@@ -53,6 +53,7 @@ function AuditPage() {
   
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [previewFoto, setPreviewFoto] = useState<string | null>(null);
 
   useEffect(() => {
     supabase
@@ -369,21 +370,41 @@ function AuditPage() {
           </div>
 
           {fotos.length > 0 && (
-            <div className="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide">
+            <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
               {fotos.map((url, idx) => (
-                <div key={idx} className="relative shrink-0 group">
-                  <img src={url} alt={`Evidência ${idx}`} className="h-24 w-24 object-cover rounded-xl border border-border" />
+                <div key={idx} className="relative shrink-0">
+                  <img 
+                    src={url} 
+                    alt={`Evidência ${idx}`} 
+                    onClick={() => setPreviewFoto(url)}
+                    className="h-36 w-36 object-cover rounded-2xl border-2 border-border shadow-sm active:scale-95 transition-all cursor-pointer" 
+                  />
                   <button 
                     onClick={() => removeFoto(url)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all"
+                    className="absolute -top-2 -right-2 bg-red-600 text-white p-2 rounded-full shadow-xl border-2 border-white transition-all active:scale-125"
                   >
-                    <Trash className="h-3 w-3" />
+                    <Trash className="h-4 w-4" />
                   </button>
                 </div>
               ))}
             </div>
           )}
         </div>
+
+        {/* MODAL DE PREVIEW DA FOTO */}
+        {previewFoto && (
+          <div 
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-6 animate-in fade-in duration-200"
+            onClick={() => setPreviewFoto(null)}
+          >
+            <div className="relative max-w-full max-h-full">
+              <button className="absolute -top-12 right-0 text-white p-2 flex items-center gap-2 font-black uppercase text-xs">
+                <X className="h-6 w-6" /> Fechar
+              </button>
+              <img src={previewFoto} className="max-w-full max-h-[80vh] rounded-2xl shadow-2xl object-contain border border-white/20" alt="Preview" />
+            </div>
+          </div>
+        )}
 
         <div className="pt-6">
           <Button
