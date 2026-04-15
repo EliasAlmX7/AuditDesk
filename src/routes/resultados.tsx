@@ -237,12 +237,15 @@ function ResultadosPage() {
                     </div>
                   </div>
                   
-                  <div className="pl-6 text-right">
+                  <div className="pl-6 text-right w-32 border-l border-border/50">
                     <div className="flex items-baseline justify-end gap-1">
                       <p className="text-3xl font-black text-[#424242] tracking-tighter">{a.score}</p>
                       <p className="text-sm font-black text-[#8CC63F]">%</p>
                     </div>
-                    <p className="text-[8px] font-black text-[#605444] uppercase tracking-widest mt-1">Pontuação</p>
+                    <div className="flex items-center justify-end gap-1 mt-1">
+                      <p className="text-sm font-black text-[#605444]">{a.pontos || 0}</p>
+                      <p className="text-[10px] font-black text-[#8CC63F]">/ 6 PTS</p>
+                    </div>
                   </div>
                 </div>
               </div>

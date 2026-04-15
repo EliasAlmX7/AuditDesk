@@ -112,6 +112,7 @@ function AuditPage() {
           cpf_colaborador: selected.cpf,
           nome_auditor: auditor.trim(),
           score,
+          pontos: conformeCount,
           classificacao,
           observacoes: observacaoFinalStr,
         })
