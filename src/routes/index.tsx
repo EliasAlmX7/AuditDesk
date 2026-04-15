@@ -140,7 +140,8 @@ function AuditPage() {
       setSelected(null);
       setSearch('');
     } catch (err: any) {
-      toast.error('Erro ao salvar: ' + err.message);
+      console.error('ERRO AUDITORIA:', err);
+      toast.error(`Falha ao salvar: ${err.message || 'Erro de conexão'}. Verifique se rodou o comando SQL da coluna "pontos".`);
     } finally {
       setSaving(false);
     }
@@ -314,8 +315,10 @@ function AuditPage() {
         <div className="pt-6">
           <Button
             onClick={handleSave}
-            disabled={saving || !allAnswered || !auditor.trim()}
-            className="w-full h-16 text-base font-black rounded-2xl shadow-xl transition-all btn-primary-corp border-none uppercase"
+            disabled={saving}
+            className={`w-full h-16 text-base font-black rounded-2xl shadow-xl transition-all border-none uppercase ${
+              !allAnswered || !auditor.trim() ? 'bg-gray-400 opacity-70' : 'btn-primary-corp'
+            }`}
           >
             {saving ? 'Sincronizando...' : 'Finalizar Auditoria'}
           </Button>
