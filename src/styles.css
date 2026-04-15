@@ -51,68 +51,68 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
+    --background: 0 0% 98%;
+    --foreground: 20 10% 26%; /* Cinza Escuro #424242 quase puro */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 20 10% 26%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 84 55% 51%; /* #8CC63F */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 35 15% 33%; /* #605444 */
-    --secondary-foreground: 210 40% 98%;
+    --popover-foreground: 20 10% 26%;
+    --primary: 84 55% 51%; /* Verde #8CC63F */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 35 15% 33%; /* Marrom #605444 */
+    --secondary-foreground: 0 0% 100%;
     --muted: 210 20% 94%;
-    --muted-foreground: 215 16% 47%;
+    --muted-foreground: 222 10% 40%; /* Cinza mais escuro para garantir leitura */
     --accent: 84 55% 51%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --accent-foreground: 20 10% 26%;
+    --destructive: 0 60% 50%; /* Um vermelho mais sóbrio */
+    --destructive-foreground: 0 0% 100%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 84 55% 51%;
-    --radius: 1.25rem;
+    --radius: 1rem;
   }
 
   body {
-    @apply bg-[#F8F9FA] text-foreground;
+    @apply bg-[#F4F4F4] text-foreground;
     font-family: 'Montserrat', sans-serif;
     -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
   .premium-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300;
+    @apply bg-white border border-border shadow-[0_4px_12px_rgba(0,0,0,0.05)] transition-all duration-200;
   }
   
-  .premium-card:hover {
-    @apply shadow-[0_20px_40px_rgb(0,0,0,0.06)] -translate-y-1;
+  .premium-card:active {
+    @apply scale-[0.98] shadow-sm;
   }
 
   .glass-header {
-    @apply sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-white/20;
+    @apply sticky top-0 z-50 bg-white border-b border-border shadow-sm;
   }
 
-  .btn-conforme {
-    @apply bg-gradient-to-br from-[#8CC63F] to-[#7BB335] text-white shadow-[0_4px_14px_0_rgba(140,198,63,0.39)] hover:shadow-[0_6px_20px_rgba(140,198,63,0.23)] active:scale-95 transition-all;
+  /* Botões com as cores exatas da sua marca */
+  .btn-primary-corp {
+    @apply bg-[#8CC63F] text-white hover:bg-[#7BB335] active:scale-95 transition-all font-bold shadow-md;
   }
 
-  .btn-nao-conforme {
-    @apply bg-gradient-to-br from-[#FF4B4B] to-[#D63A3A] text-white shadow-[0_4px_14px_0_rgba(255,75,75,0.39)] hover:shadow-[0_6px_20px_rgba(255,75,75,0.23)] active:scale-95 transition-all;
+  .btn-secondary-corp {
+    @apply bg-[#605444] text-white hover:bg-[#52483a] active:scale-95 transition-all font-bold shadow-md;
   }
-}
-
-/* Animações de entrada chiques */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-chique {
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.4s ease-out forwards;
 }
 
-/* Esconder scrollbar mas manter funcionalidade */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

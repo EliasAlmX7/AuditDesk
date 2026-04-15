@@ -146,53 +146,52 @@ function AuditPage() {
 
   if (!selected) {
     return (
-      <div className="min-h-screen pb-24 bg-[#F8F9FA]">
-        <div className="glass-header px-6 py-8 mb-6">
-          <h1 className="text-3xl font-black text-secondary tracking-tight">AuditDesk <span className="text-primary">.</span></h1>
-          <p className="text-sm font-medium text-muted-foreground mt-1">Inicie uma nova auditoria corporativa</p>
+      <div className="min-h-screen pb-24 bg-[#F4F4F4]">
+        <div className="bg-white px-6 py-8 mb-6 border-b border-border shadow-sm">
+          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">AuditDesk <span className="text-[#8CC63F]">.</span></h1>
+          <p className="text-sm font-bold text-[#605444] mt-1">Gestão de Auditoria Corportativa</p>
         </div>
 
         <div className="px-6 space-y-6 animate-chique">
-          <div className="premium-card p-6 rounded-3xl space-y-4">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Configuração Inicial</p>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-border space-y-4">
+            <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">Identificação do Auditor</p>
             <div>
-              <label className="text-xs font-bold text-secondary mb-1.5 block">Nome do Auditor responsável</label>
               <Input
-                placeholder="Ex: Elias Almeida"
+                placeholder="Seu nome completo"
                 value={auditor}
                 onChange={e => setAuditor(e.target.value)}
-                className="h-12 rounded-xl bg-muted/30 border-none focus-visible:ring-primary/30"
+                className="h-12 rounded-xl bg-muted/50 border-border text-foreground font-bold focus-visible:ring-primary/30"
               />
             </div>
           </div>
 
           <div className="space-y-4">
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest ml-1">Buscar Colaborador</p>
-            <div className="relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors group-focus-within:text-primary" />
+            <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest ml-1">Localizar Colaborador</p>
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#605444]" />
               <Input
-                placeholder="Digite o nome ou área..."
+                placeholder="Nome ou Área..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-12 h-14 rounded-2xl premium-card border-none focus-visible:ring-primary/20 text-base"
+                className="pl-12 h-14 rounded-xl bg-white border-border shadow-sm text-foreground font-bold"
               />
             </div>
 
             <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
               <button
                 onClick={() => setAreaFilter('')}
-                className={`shrink-0 rounded-full px-5 py-2 text-xs font-bold transition-all ${
-                  !areaFilter ? 'bg-secondary text-white shadow-lg' : 'bg-white text-muted-foreground hover:bg-muted shadow-sm'
+                className={`shrink-0 rounded-full px-5 py-2 text-xs font-black uppercase transition-all ${
+                  !areaFilter ? 'bg-[#605444] text-white shadow-md' : 'bg-white text-[#605444] border border-border shadow-sm'
                 }`}
               >
-                Todas as Áreas
+                Todas
               </button>
               {areas.map(area => (
                 <button
                   key={area}
                   onClick={() => setAreaFilter(area === areaFilter ? '' : area)}
-                  className={`shrink-0 rounded-full px-5 py-2 text-xs font-bold transition-all ${
-                    areaFilter === area ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-white text-muted-foreground shadow-sm hover:bg-muted'
+                  className={`shrink-0 rounded-full px-5 py-2 text-xs font-black uppercase transition-all ${
+                    areaFilter === area ? 'bg-[#8CC63F] text-white shadow-md' : 'bg-white text-[#605444] border border-border shadow-sm'
                   }`}
                 >
                   {area}
@@ -205,17 +204,17 @@ function AuditPage() {
                 <button
                   key={c.cpf}
                   onClick={() => setSelected(c)}
-                  className="premium-card p-5 rounded-2xl flex items-center justify-between group active:scale-95 text-left transition-all"
-                  style={{ animationDelay: `${i * 0.05}s` }}
+                  className="bg-white p-5 rounded-2xl flex items-center justify-between border border-border shadow-sm active:scale-95 text-left transition-all"
+                  style={{ animationDelay: `${i * 0.03}s` }}
                 >
                   <div>
-                    <p className="font-bold text-secondary text-base group-hover:text-primary transition-colors">{c.nome}</p>
+                    <p className="font-black text-[#424242] text-base">{c.nome}</p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-[10px] font-bold uppercase bg-muted px-2 py-0.5 rounded-md text-muted-foreground">{c.area}</span>
-                      <span className="text-[10px] font-bold uppercase bg-primary/10 px-2 py-0.5 rounded-md text-primary">{c.cargo}</span>
+                      <span className="text-[10px] font-black uppercase bg-[#605444]/10 px-2 py-0.5 rounded text-[#605444]">{c.area}</span>
+                      <span className="text-[10px] font-black uppercase bg-[#8CC63F]/10 px-2 py-0.5 rounded text-[#8CC63F]">{c.cargo}</span>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="h-5 w-5 text-[#605444]" />
                 </button>
               ))}
             </div>
@@ -229,28 +228,28 @@ function AuditPage() {
   const currentScore = allAnswered ? calcularScore(respostas) : null;
 
   return (
-    <div className="min-h-screen pb-24 bg-[#F8F9FA]">
-      <div className="glass-header px-6 py-6 mb-6 flex items-center justify-between">
+    <div className="min-h-screen pb-24 bg-[#F4F4F4]">
+      <div className="bg-white px-6 py-6 mb-6 border-b border-border shadow-sm flex items-center justify-between">
         <div className="flex flex-col">
           <button
             onClick={() => { setSelected(null); setRespostas({}); setObservacoes({}); }}
-            className="text-[10px] font-black text-primary uppercase tracking-tighter mb-1 hover:opacity-70 transition-all flex items-center gap-1"
+            className="text-[10px] font-black text-[#8CC63F] uppercase tracking-tighter mb-1 hover:opacity-70 transition-all"
           >
-            ← Cancelar e Voltar
+            ← Voltar para lista
           </button>
-          <h1 className="text-2xl font-black text-secondary tracking-tight truncate max-w-[200px]">{selected.nome}</h1>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase">{selected.area} • {selected.cargo}</p>
+          <h1 className="text-xl font-black text-[#424242] tracking-tight truncate max-w-[180px]">{selected.nome}</h1>
+          <p className="text-[10px] font-black text-[#605444] uppercase">{selected.area} • {selected.cargo}</p>
         </div>
         
         {currentScore !== null && (
           <div className="flex flex-col items-end animate-chique">
-            <p className="text-3xl font-black text-primary">{currentScore}%</p>
-            <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Score Atual</p>
+            <p className="text-3xl font-black text-[#8CC63F]">{currentScore}%</p>
+            <p className="text-[9px] font-black uppercase text-[#605444]">Score</p>
           </div>
         )}
       </div>
 
-      <div className="px-6 space-y-6 animate-chique">
+      <div className="px-6 space-y-4 animate-chique">
         {CRITERIOS.map((criterio, i) => {
           const val = respostas[criterio.id];
           const obs = observacoes[criterio.id] || '';
@@ -258,17 +257,16 @@ function AuditPage() {
           return (
             <div 
               key={criterio.id} 
-              className="premium-card p-6 rounded-3xl"
-              style={{ animationDelay: `${i * 0.1}s` }}
+              className="bg-white p-6 rounded-2xl border border-border shadow-sm"
             >
               <div className="mb-4">
                 <div className="flex items-start gap-3">
-                   <div className="h-6 w-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                   <div className="h-6 w-6 rounded bg-[#8CC63F]/10 text-[#8CC63F] flex items-center justify-center text-[10px] font-black shrink-0">
                     {i + 1}
                    </div>
                    <div>
-                    <p className="font-bold text-secondary text-base leading-tight">{criterio.label}</p>
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{criterio.description}</p>
+                    <p className="font-black text-[#424242] text-sm leading-tight uppercase">{criterio.label}</p>
+                    <p className="text-xs font-bold text-[#605444] mt-1 leading-relaxed">{criterio.description}</p>
                    </div>
                 </div>
               </div>
@@ -276,36 +274,35 @@ function AuditPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => toggleResposta(criterio.id, 'Conforme')}
-                  className={`flex items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold transition-all border-2 ${
+                  className={`flex items-center justify-center gap-2 rounded-xl py-4 text-xs font-bold transition-all border-2 ${
                     val === 'Conforme'
-                      ? 'btn-conforme border-transparent'
-                      : 'bg-white text-muted-foreground border-muted hover:border-primary/50'
+                      ? 'bg-[#8CC63F] text-white border-transparent shadow-md'
+                      : 'bg-white text-[#605444] border-muted hover:border-[#8CC63F]/50'
                   }`}
                 >
-                  <Check className="h-5 w-5" />
+                  <Check className="h-4 w-4" />
                   Conforme
                 </button>
                 <button
                   onClick={() => toggleResposta(criterio.id, 'Não Conforme')}
-                  className={`flex items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold transition-all border-2 ${
+                  className={`flex items-center justify-center gap-2 rounded-xl py-4 text-xs font-bold transition-all border-2 ${
                     val === 'Não Conforme'
-                      ? 'btn-nao-conforme border-transparent'
-                      : 'bg-white text-muted-foreground border-muted hover:border-danger/50'
+                      ? 'bg-[#605444] text-white border-transparent shadow-md'
+                      : 'bg-white text-[#605444] border-muted hover:border-[#605444]/50'
                   }`}
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                   Inadequado
                 </button>
               </div>
 
-              <div className="mt-4 relative">
-                <label className="text-[10px] font-bold text-muted-foreground mb-1 block uppercase ml-1">Observações do Item</label>
+              <div className="mt-4">
+                <label className="text-[10px] font-black text-[#605444] mb-1 block uppercase">Justificativa / Observação</label>
                 <Textarea
-                  placeholder="Justifique ou detalhe pontos de melhoria..."
+                  placeholder="Detalhes sobre a conformidade..."
                   value={obs}
                   onChange={e => updateObservacao(criterio.id, e.target.value)}
-                  rows={2}
-                  className="rounded-2xl bg-muted/30 border-none focus-visible:ring-primary/20 text-xs px-4 py-3 min-h-[80px]"
+                  className="rounded-xl bg-muted/50 border-border text-foreground font-medium text-xs px-4 py-3 min-h-[60px]"
                 />
               </div>
             </div>
@@ -316,23 +313,12 @@ function AuditPage() {
           <Button
             onClick={handleSave}
             disabled={saving || !allAnswered || !auditor.trim()}
-            className="w-full h-16 text-lg font-black rounded-3xl shadow-2xl transition-all disabled:opacity-50 btn-conforme border-none"
-            size="lg"
+            className="w-full h-16 text-base font-black rounded-2xl shadow-xl transition-all btn-primary-corp border-none uppercase"
           >
-            {saving ? (
-              <div className="flex items-center gap-3">
-                <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Sincronizando...
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Save className="h-6 w-6" />
-                Finalizar Auditoria
-              </div>
-            )}
+            {saving ? 'Sincronizando...' : 'Finalizar Auditoria'}
           </Button>
-          <p className="text-[10px] text-center text-muted-foreground mt-4 uppercase font-bold tracking-widest">
-            Sincronização via Supabase Cloud ativa
+          <p className="text-[9px] text-center text-[#605444] mt-4 uppercase font-black tracking-widest opacity-60">
+            AuditDesk v2.0 • Proteção de Dados Ativa
           </p>
         </div>
       </div>

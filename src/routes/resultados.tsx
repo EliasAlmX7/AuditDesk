@@ -122,15 +122,15 @@ function ResultadosPage() {
   });
 
   return (
-    <div className="min-h-screen pb-24 bg-[#F8F9FA]">
-      <div className="glass-header px-6 py-8 mb-6 flex items-center justify-between">
+    <div className="min-h-screen pb-24 bg-[#F4F4F4]">
+      <div className="bg-white px-6 py-8 mb-6 border-b border-border shadow-sm flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-secondary tracking-tight">Monitoramento <span className="text-primary">.</span></h1>
-          <p className="text-sm font-medium text-muted-foreground mt-1">{filtered.length} registros sincronizados</p>
+          <h1 className="text-3xl font-black text-[#424242] tracking-tighter">Monitoramento <span className="text-[#8CC63F]">.</span></h1>
+          <p className="text-sm font-bold text-[#605444] mt-1">{filtered.length} Registros Sincronizados</p>
         </div>
         <Button 
           onClick={handleDownloadCSV} 
-          className="btn-conforme rounded-2xl h-12 gap-2 text-xs font-black uppercase px-6"
+          className="btn-primary-corp rounded-xl h-12 gap-2 text-[10px] font-black uppercase px-6"
         >
           <Download className="h-4 w-4" />
           Planilha
@@ -138,8 +138,8 @@ function ResultadosPage() {
       </div>
 
       <div className="px-6 space-y-6 animate-chique">
-        <div className="premium-card p-6 rounded-3xl space-y-5">
-          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Painel de Filtros</p>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-border space-y-5">
+          <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">Painel de Pesquisa</p>
           
           <div className="space-y-4">
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-2 px-2">
@@ -147,8 +147,8 @@ function ResultadosPage() {
                 <button
                   key={c}
                   onClick={() => setClassFilter(c)}
-                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
-                    classFilter === c ? 'bg-secondary text-white shadow-lg' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase transition-all ${
+                    classFilter === c ? 'bg-[#605444] text-white shadow-md' : 'bg-muted text-[#605444] border border-border'
                   }`}
                 >
                   {c || 'Todos Status'}
@@ -156,11 +156,11 @@ function ResultadosPage() {
               ))}
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-2 px-2 border-t border-border/50 pt-4">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-2 px-2 border-t border-border pt-4">
               <button
                 onClick={() => setAreaFilter('')}
-                className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
-                  !areaFilter ? 'bg-primary text-white shadow-lg' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase transition-all ${
+                  !areaFilter ? 'bg-[#8CC63F] text-white shadow-md' : 'bg-muted text-[#605444] border border-border'
                 }`}
               >
                 Todas Áreas
@@ -169,8 +169,8 @@ function ResultadosPage() {
                 <button
                   key={area}
                   onClick={() => setAreaFilter(area === areaFilter ? '' : area)}
-                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase tracking-tighter transition-all ${
-                    areaFilter === area ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  className={`shrink-0 rounded-full px-5 py-2 text-[10px] font-black uppercase transition-all ${
+                    areaFilter === area ? 'bg-[#8CC63F] text-white shadow-md' : 'bg-muted text-[#605444] border border-border'
                   }`}
                 >
                   {area}
@@ -178,14 +178,14 @@ function ResultadosPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-muted-foreground uppercase ml-1">De</label>
-                <Input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-11 rounded-xl bg-muted/30 border-none text-xs font-bold" />
+                <label className="text-[10px] font-black text-[#605444] uppercase ml-1">Início</label>
+                <Input type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="h-11 rounded-xl bg-muted/50 border-border text-xs font-bold" />
               </div>
               <div className="space-y-1">
-                <label className="text-[10px] font-black text-muted-foreground uppercase ml-1">Até</label>
-                <Input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-11 rounded-xl bg-muted/30 border-none text-xs font-bold" />
+                <label className="text-[10px] font-black text-[#605444] uppercase ml-1">Fim</label>
+                <Input type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="h-11 rounded-xl bg-muted/50 border-border text-xs font-bold" />
               </div>
             </div>
           </div>
@@ -193,41 +193,41 @@ function ResultadosPage() {
 
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
-            <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">Obtendo dados seguros...</p>
+            <div className="h-8 w-8 border-4 border-[#8CC63F] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#605444]">Conectando à Nuvem...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-3">
             {filtered.map((a, i) => (
               <div 
                 key={a.id} 
-                className="premium-card p-6 rounded-3xl"
+                className="bg-white p-6 rounded-2xl border border-border shadow-sm"
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <p className="font-black text-secondary text-lg leading-none tracking-tight">{a.colaboradores?.nome ?? '—'}</p>
-                      <span className={`inline-block rounded-lg px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${classificacaoBg(a.classificacao)}`}>
+                      <p className="font-black text-[#424242] text-lg leading-tight tracking-tighter">{a.colaboradores?.nome ?? '—'}</p>
+                      <span className={`inline-block rounded px-2 py-0.5 text-[8px] font-black uppercase tracking-widest ${classificacaoBg(a.classificacao)}`}>
                         {a.classificacao}
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-x-4 gap-y-2">
-                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-1.5 uppercase">
-                        <Filter className="h-3 w-3 text-primary" /> {a.colaboradores?.area}
+                      <p className="text-[10px] font-bold text-[#605444] flex items-center gap-1.5 uppercase">
+                        <Filter className="h-3 w-3 text-[#8CC63F]" /> {a.colaboradores?.area}
                       </p>
-                      <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-1.5 uppercase">
-                        <Calendar className="h-3 w-3 text-primary" /> {new Date(a.data_hora).toLocaleString('pt-BR')}
+                      <p className="text-[10px] font-bold text-[#605444] flex items-center gap-1.5 uppercase">
+                        <Calendar className="h-3 w-3 text-[#8CC63F]" /> {new Date(a.data_hora).toLocaleString('pt-BR')}
                       </p>
                     </div>
-                    <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between">
-                      <p className="text-[9px] font-black text-muted-foreground uppercase bg-muted/50 px-3 py-1 rounded-full">
-                        Responsável: {a.nome_auditor}
+                    <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
+                      <p className="text-[9px] font-black text-[#605444] uppercase opacity-70">
+                        Auditor: {a.nome_auditor}
                       </p>
                       <button 
                         onClick={() => handleDelete(a.id, a.colaboradores?.nome || '')}
                         disabled={deletingId === a.id}
-                        className="p-2 text-muted-foreground/40 hover:text-danger hover:bg-danger/10 rounded-xl transition-all active:scale-90"
+                        className="p-2 text-muted-foreground hover:text-danger hover:bg-danger/10 rounded-xl transition-all"
                       >
                         <Trash2 className={`h-4 w-4 ${deletingId === a.id ? 'animate-pulse' : ''}`} />
                       </button>
@@ -236,18 +236,18 @@ function ResultadosPage() {
                   
                   <div className="pl-6 text-right">
                     <div className="flex items-baseline justify-end gap-1">
-                      <p className="text-3xl font-black text-secondary tracking-tighter">{a.score}</p>
-                      <p className="text-xs font-black text-primary">%</p>
+                      <p className="text-3xl font-black text-[#424242] tracking-tighter">{a.score}</p>
+                      <p className="text-sm font-black text-[#8CC63F]">%</p>
                     </div>
-                    <p className="text-[8px] font-black text-muted-foreground uppercase tracking-widest mt-1">Pontuação Final</p>
+                    <p className="text-[8px] font-black text-[#605444] uppercase tracking-widest mt-1">Pontuação</p>
                   </div>
                 </div>
               </div>
             ))}
             {filtered.length === 0 && (
-              <div className="text-center py-24 premium-card rounded-3xl border-dashed">
-                <Search className="h-10 w-10 text-muted-foreground/20 mx-auto mb-4" />
-                <p className="text-sm font-black text-muted-foreground uppercase tracking-widest">Nenhum registro encontrado</p>
+              <div className="text-center py-24 bg-white rounded-2xl border border-dashed border-border">
+                <Search className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
+                <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">Nenhum Registro Encontrado</p>
               </div>
             )}
           </div>
