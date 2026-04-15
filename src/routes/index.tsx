@@ -96,6 +96,7 @@ function AuditPage() {
     try {
       const score = calcularScore(respostas);
       const classificacao = calcularClassificacao(score);
+      const conformeCount = Object.values(respostas).filter(v => v === 'Conforme').length;
 
       const observacaoFinalArr = Object.entries(observacoes)
         .filter(([_, obs]) => obs && obs.trim() !== '')
