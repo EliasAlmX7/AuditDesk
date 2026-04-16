@@ -44,6 +44,8 @@ function AuditPage() {
   const [areas, setAreas] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [areaFilter, setAreaFilter] = useState('');
+  const [filterPending, setFilterPending] = useState(false);
+  const [auditadosCpfs, setAuditadosCpfs] = useState<Set<string>>(new Set());
   
   const [selected, setSelected] = useStickyState<Colaborador | null>(null, 'audit_selected_colab');
   const [auditor, setAuditor] = useStickyState('', 'audit_auditor_nome');
@@ -68,13 +70,30 @@ function AuditPage() {
           setAreas(uniqueAreas);
         }
       });
+
+    // Buscar quem já foi auditado hoje ou em um período recente (ex: última semana)
+    // Para simplificar e ajudar o usuário agora, vamos marcar quem já foi auditado alguma vez
+    supabase
+      .from('auditorias')
+      .select('cpf_colaborador')
+      .then(({ data }) => {
+        if (data) {
+          const cpfs = new Set(data.map(a => a.cpf_colaborador));
+          setAuditadosCpfs(cpfs);
+        }
+      });
   }, []);
 
-  const filtered = colaboradores.filter(c => {
+   const filtered = colaboradores.filter(c => {
     const matchSearch = !search || c.nome.toLowerCase().includes(search.toLowerCase());
     const matchArea = !areaFilter || c.area === areaFilter;
-    return matchSearch && matchArea;
+    const matchPending = !filterPending || !auditadosCpfs.has(c.cpf);
+    return matchSearch && matchArea && matchPending;
   });
+
+  const percentConcluido = colaboradores.length > 0 
+    ? Math.round((auditadosCpfs.size / colaboradores.length) * 100) 
+    : 0;
 
   const toggleResposta = useCallback((criterioId: string, valor: 'Conforme' | 'Não Conforme') => {
     setRespostas(prev => ({ ...prev, [criterioId]: valor }));
@@ -245,6 +264,20 @@ function AuditPage() {
               ))}
             </div>
 
+            <div className="flex items-center justify-between px-1">
+              <p className="text-[10px] font-black text-[#605444] uppercase tracking-widest">
+                {auditadosCpfs.size} de {colaboradores.length} auditados ({percentConcluido}%)
+              </p>
+              <button 
+                onClick={() => setFilterPending(!filterPending)}
+                className={`text-[10px] font-black uppercase px-3 py-1 rounded-lg transition-all ${
+                  filterPending ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-600'
+                }`}
+              >
+                {filterPending ? 'Ver Todos' : 'Ver Pendentes'}
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 gap-3">
               {filtered.map((c, i) => (
                 <button
@@ -260,7 +293,22 @@ function AuditPage() {
                       <span className="text-[10px] font-black uppercase bg-[#8CC63F]/10 px-2 py-0.5 rounded text-[#8CC63F]">{c.cargo}</span>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-[#605444]" />
+                   <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      {auditadosCpfs.has(c.cpf) ? (
+                        <div className="flex items-center gap-1 text-[#8CC63F]">
+                          <span className="text-[8px] font-black uppercase">Auditado</span>
+                          <Check className="h-4 w-4" />
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-1 text-orange-400">
+                          <span className="text-[8px] font-black uppercase">Falta</span>
+                          <div className="h-1.5 w-1.5 rounded-full bg-orange-400 animate-pulse" />
+                        </div>
+                      )}
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-[#605444]" />
+                  </div>
                 </button>
               ))}
             </div>

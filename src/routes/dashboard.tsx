@@ -18,6 +18,12 @@ type AuditoriaRow = {
   colaboradores: { nome: string; area: string } | null;
 };
 
+type ColaboradorRow = {
+  cpf: string;
+  nome: string;
+  area: string;
+};
+
 type RespostaRow = {
   criterio: string;
   resposta: string;
@@ -26,15 +32,18 @@ type RespostaRow = {
 function DashboardPage() {
   const [auditorias, setAuditorias] = useState<AuditoriaRow[]>([]);
   const [respostas, setRespostas] = useState<RespostaRow[]>([]);
+  const [colaboradores, setColaboradores] = useState<ColaboradorRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      supabase.from('auditorias').select('id, cpf_colaborador, score, classificacao, data_hora, colaboradores(nome, area)').order('data_hora', { ascending: false }).limit(500),
-      supabase.from('respostas').select('criterio, resposta').limit(5000),
-    ]).then(([audRes, respRes]) => {
+      supabase.from('auditorias').select('id, cpf_colaborador, score, classificacao, data_hora, colaboradores(nome, area)').order('data_hora', { ascending: false }).limit(2000),
+      supabase.from('respostas').select('criterio, resposta').limit(10000),
+      supabase.from('colaboradores').select('cpf, nome, area').eq('status', 'ativo'),
+    ]).then(([audRes, respRes, colRes]) => {
       if (audRes.data) setAuditorias(audRes.data as unknown as AuditoriaRow[]);
       if (respRes.data) setRespostas(respRes.data);
+      if (colRes.data) setColaboradores(colRes.data);
       setLoading(false);
     });
   }, []);
@@ -63,6 +72,26 @@ function DashboardPage() {
   const rankingArea = [...areaMap.entries()]
     .map(([area, scores]) => ({ area, media: Math.round(scores.reduce((s, v) => s + v, 0) / scores.length) }))
     .sort((a, b) => b.media - a.media);
+
+  // Pendências por área
+  const auditadosCpfs = new Set(auditorias.map(a => a.cpf_colaborador));
+  const pendenciasPorAreaMap = new Map<string, { total: number; auditados: number }>();
+  
+  colaboradores.forEach(c => {
+    const stats = pendenciasPorAreaMap.get(c.area) || { total: 0, auditados: 0 };
+    stats.total++;
+    if (auditadosCpfs.has(c.cpf)) stats.auditados++;
+    pendenciasPorAreaMap.set(c.area, stats);
+  });
+
+  const pendenciasArea = [...pendenciasPorAreaMap.entries()]
+    .map(([area, stats]) => ({
+      area,
+      pendentes: stats.total - stats.auditados,
+      total: stats.total,
+      percent: Math.round((stats.auditados / stats.total) * 100)
+    }))
+    .sort((a, b) => b.pendentes - a.pendentes);
 
   // Top/bottom colaboradores
   const colabMap = new Map<string, { nome: string; scores: number[] }>();
@@ -126,6 +155,27 @@ function DashboardPage() {
                   <span className="text-sm">{a.area}</span>
                 </div>
                 <span className="text-sm font-bold">{a.media}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Pendências por Área */}
+        <div className="rounded-xl bg-card p-3.5 shadow-sm border border-border/50">
+          <h2 className="font-semibold text-sm mb-2 text-orange-600">Pendências de Auditoria</h2>
+          <div className="space-y-2.5">
+            {pendenciasArea.map(p => (
+              <div key={p.area} className="space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold">{p.area}</span>
+                  <span className="text-muted-foreground">{p.pendentes} faltantes de {p.total}</span>
+                </div>
+                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full rounded-full transition-all ${p.percent === 100 ? 'bg-[#8CC63F]' : 'bg-orange-500'}`}
+                    style={{ width: `${p.percent}%` }}
+                  />
+                </div>
               </div>
             ))}
           </div>

@@ -19,6 +19,7 @@ type Colaborador = {
 
 function ColaboradoresPage() {
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
+  const [auditadosCpfs, setAuditadosCpfs] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -27,6 +28,15 @@ function ColaboradoresPage() {
       .select('cpf, nome, area, cargo, status')
       .order('nome')
       .then(({ data }) => { if (data) setColaboradores(data); });
+
+    supabase
+      .from('auditorias')
+      .select('cpf_colaborador')
+      .then(({ data }) => {
+        if (data) {
+          setAuditadosCpfs(new Set(data.map(a => a.cpf_colaborador)));
+        }
+      });
   }, []);
 
   const filtered = colaboradores.filter(c =>
@@ -60,7 +70,14 @@ function ColaboradoresPage() {
                 <p className="font-semibold text-sm">{c.nome}</p>
                 <p className="text-xs text-muted-foreground">{c.area} · {c.cargo}</p>
               </div>
-              <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-3">
+                {auditadosCpfs.has(c.cpf) ? (
+                  <span className="text-[10px] font-bold text-[#8CC63F] bg-[#8CC63F]/10 px-2 py-0.5 rounded uppercase">Auditado</span>
+                ) : (
+                  <span className="text-[10px] font-bold text-orange-500 bg-orange-500/10 px-2 py-0.5 rounded uppercase">Pendente</span>
+                )}
+                <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+              </div>
             </Link>
           ))}
         </div>
